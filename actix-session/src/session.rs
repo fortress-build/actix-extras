@@ -130,7 +130,7 @@ impl Session {
             }
 
             let key = key.into();
-            let val = serde_json::to_string(&value)
+            let val = serde_json::to_value(&value)
                 .with_context(|| {
                     format!(
                         "Failed to serialize the provided `{}` type instance as JSON in order to \
@@ -141,7 +141,7 @@ impl Session {
                 })
                 .map_err(SessionInsertError)?;
 
-            inner.state.insert(key, Value::String(val));
+            inner.state.insert(key, val);
         }
 
         Ok(())
