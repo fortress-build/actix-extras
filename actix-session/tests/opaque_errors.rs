@@ -1,7 +1,5 @@
-use std::collections::HashMap;
-
 use actix_session::{
-    storage::{LoadError, SaveError, SessionKey, SessionStore, UpdateError},
+    storage::{LoadError, SaveError, SessionKey, SessionState, SessionStore, UpdateError},
     Session, SessionMiddleware,
 };
 use actix_web::{
@@ -45,10 +43,7 @@ async fn errors_are_opaque() {
 struct MockStore;
 
 impl SessionStore for MockStore {
-    async fn load(
-        &self,
-        _session_key: &SessionKey,
-    ) -> Result<Option<HashMap<String, String>>, LoadError> {
+    async fn load(&self, _session_key: &SessionKey) -> Result<Option<SessionState>, LoadError> {
         Err(LoadError::Other(anyhow::anyhow!(
             "My error full of implementation details"
         )))
@@ -56,7 +51,7 @@ impl SessionStore for MockStore {
 
     async fn save(
         &self,
-        _session_state: HashMap<String, String>,
+        _session_state: SessionState,
         _ttl: &Duration,
     ) -> Result<SessionKey, SaveError> {
         Ok("random_value".to_string().try_into().unwrap())
@@ -65,7 +60,7 @@ impl SessionStore for MockStore {
     async fn update(
         &self,
         _session_key: SessionKey,
-        _session_state: HashMap<String, String>,
+        _session_state: SessionState,
         _ttl: &Duration,
     ) -> Result<SessionKey, UpdateError> {
         #![allow(clippy::diverging_sub_expression)]

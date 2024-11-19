@@ -398,8 +398,6 @@ impl RedisSessionStore {
 
 #[cfg(test)]
 mod tests {
-    use std::collections::HashMap;
-
     use actix_web::cookie::time;
     #[cfg(not(feature = "redis-session"))]
     use deadpool_redis::{Config, Runtime};
@@ -472,7 +470,11 @@ mod tests {
         let session_key = generate_session_key();
         let initial_session_key = session_key.as_ref().to_owned();
         let updated_session_key = store
-            .update(session_key, HashMap::new(), &time::Duration::seconds(1))
+            .update(
+                session_key,
+                SessionState::new(),
+                &time::Duration::seconds(1),
+            )
             .await
             .unwrap();
         assert_ne!(initial_session_key, updated_session_key.as_ref());

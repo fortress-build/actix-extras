@@ -16,7 +16,10 @@ async fn session() {
     let state: Vec<_> = res.get_session().entries().clone().into_iter().collect();
     assert_eq!(
         state.as_slice(),
-        [("key2".to_string(), "\"value2\"".to_string())]
+        [(
+            "key2".to_string(),
+            serde_json::Value::String("\"value2\"".to_string())
+        )]
     );
 }
 
