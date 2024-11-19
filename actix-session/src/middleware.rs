@@ -1,4 +1,4 @@
-use std::{collections::HashMap, fmt, future::Future, pin::Pin, rc::Rc};
+use std::{fmt, future::Future, pin::Pin, rc::Rc};
 
 use actix_utils::future::{ready, Ready};
 use actix_web::{
@@ -15,7 +15,7 @@ use crate::{
         self, Configuration, CookieConfiguration, CookieContentSecurity, SessionMiddlewareBuilder,
         TtlExtensionPolicy,
     },
-    storage::{LoadError, SessionKey, SessionStore},
+    storage::{LoadError, SessionKey, SessionState, SessionStore},
     Session, SessionStatus,
 };
 
@@ -358,7 +358,7 @@ fn extract_session_key(req: &ServiceRequest, config: &CookieConfiguration) -> Op
 async fn load_session_state<Store: SessionStore>(
     session_key: Option<SessionKey>,
     storage_backend: &Store,
-) -> Result<(Option<SessionKey>, HashMap<String, String>), actix_web::Error> {
+) -> Result<(Option<SessionKey>, SessionState), actix_web::Error> {
     if let Some(session_key) = session_key {
         match storage_backend.load(&session_key).await {
             Ok(state) => {
@@ -376,7 +376,7 @@ async fn load_session_state<Store: SessionStore>(
                         empty session."
                     );
 
-                    Ok((None, HashMap::new()))
+                    Ok((None, SessionState::new()))
                 }
             }
 
@@ -388,14 +388,14 @@ async fn load_session_state<Store: SessionStore>(
                         "Invalid session state, creating a new empty session."
                     );
 
-                    Ok((Some(session_key), HashMap::new()))
+                    Ok((Some(session_key), SessionState::new()))
                 }
 
                 LoadError::Other(err) => Err(e500(err)),
             },
         }
     } else {
-        Ok((None, HashMap::new()))
+        Ok((None, SessionState::new()))
     }
 }
 
