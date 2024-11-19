@@ -77,6 +77,11 @@ struct SessionInner {
 }
 
 impl Session {
+    /// Get a `value` from the session as a [`serde_json::Value`].
+    pub fn get_value(&self, key: &str) -> Option<Value> {
+        self.0.borrow().state.get(key).cloned()
+    }
+
     /// Get a `value` from the session.
     ///
     /// It returns an error if it fails to deserialize as `T` the JSON value associated with `key`.
@@ -218,7 +223,7 @@ impl Session {
     #[allow(clippy::needless_pass_by_ref_mut)]
     pub(crate) fn set_session(
         req: &mut ServiceRequest,
-        data: impl IntoIterator<Item = (String, impl Into<Value>)>,
+        data: impl IntoIterator<Item = (String, Value)>,
     ) {
         let session = Session::get_session(&mut req.extensions_mut());
         let mut inner = session.0.borrow_mut();

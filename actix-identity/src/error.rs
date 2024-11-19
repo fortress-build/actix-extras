@@ -37,6 +37,11 @@ pub struct LostIdentityError;
 #[non_exhaustive]
 pub struct MissingIdentityError;
 
+/// Encountered a non-string value when loading the user id the session storage.
+#[derive(Debug, Display, Error)]
+#[display("Expected user id to be a String, but found {_0}")]
+pub struct InvalidIdTypeError(#[error(not(source))] pub &'static str);
+
 /// Errors that can occur while retrieving an identity.
 #[derive(Debug, Display, Error, From)]
 #[non_exhaustive]
@@ -58,6 +63,10 @@ pub enum GetIdentityError {
     /// Seeing this error indicates a bug in actix-identity.
     #[display("{_0}")]
     LostIdentityError(LostIdentityError),
+
+    /// Encountered a non-string value when loading the user id the session storage.
+    #[display("{_0}")]
+    InvalidIdTypeError(InvalidIdTypeError),
 }
 
 impl ResponseError for GetIdentityError {

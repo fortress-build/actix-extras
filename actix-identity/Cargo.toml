@@ -2,8 +2,8 @@
 name = "actix-identity"
 version = "0.8.0"
 authors = [
-    "Nikolay Kim <fafhrd91@gmail.com>",
-    "Luca Palmieri <rust@lpalmieri.com>",
+  "Nikolay Kim <fafhrd91@gmail.com>",
+  "Luca Palmieri <rust@lpalmieri.com>",
 ]
 description = "Identity management for Actix Web"
 keywords = ["actix", "auth", "identity", "web", "security"]
@@ -19,22 +19,35 @@ all-features = true
 
 [dependencies]
 actix-service = "2"
-actix-session = "0.10"
+actix-session = { git = "https://github.com/fortress-build/actix-extras" }
 actix-utils = "3"
-actix-web = { version = "4", default-features = false, features = ["cookies", "secure-cookies"] }
+actix-web = { version = "4", default-features = false, features = [
+  "cookies",
+  "secure-cookies",
+] }
 
 derive_more = { version = "1", features = ["display", "error", "from"] }
 futures-core = "0.3.17"
 serde = { version = "1", features = ["derive"] }
+serde_json = "1.0.133"
 tracing = { version = "0.1.30", default-features = false, features = ["log"] }
 
 [dev-dependencies]
 actix-http = "3"
-actix-web = { version = "4", default-features = false, features = ["macros", "cookies", "secure-cookies"] }
-actix-session = { version = "0.10", features = ["redis-session", "cookie-session"] }
-
+actix-web = { version = "4", default-features = false, features = [
+  "macros",
+  "cookies",
+  "secure-cookies",
+] }
+actix-session = { git = "https://github.com/fortress-build/actix-extras", features = [
+  "redis-session",
+  "cookie-session",
+] }
 env_logger = "0.11"
-reqwest = { version = "0.12", default-features = false, features = ["cookies", "json"] }
+reqwest = { version = "0.12", default-features = false, features = [
+  "cookies",
+  "json",
+] }
 uuid = { version = "1", features = ["v4"] }
 
 [lints]

@@ -6,11 +6,13 @@ use actix_web::{
     http::StatusCode,
     Error, FromRequest, HttpMessage, HttpRequest, HttpResponse,
 };
+use serde_json::Value;
 
 use crate::{
     config::LogoutBehaviour,
     error::{
-        GetIdentityError, LoginError, LostIdentityError, MissingIdentityError, SessionExpiryError,
+        GetIdentityError, InvalidIdTypeError, LoginError, LostIdentityError, MissingIdentityError,
+        SessionExpiryError,
     },
 };
 
@@ -104,8 +106,16 @@ impl IdentityInner {
     /// Retrieve the user id attached to the current session.
     fn get_identity(&self) -> Result<String, GetIdentityError> {
         self.session
-            .get::<String>(self.id_key)?
+            .get_value(self.id_key)
             .ok_or_else(|| MissingIdentityError.into())
+            .and_then(|value| match value {
+                Value::String(s) => Ok(s),
+                Value::Null => Err(InvalidIdTypeError("null").into()),
+                Value::Bool(_) => Err(InvalidIdTypeError("bool").into()),
+                Value::Number(_) => Err(InvalidIdTypeError("number").into()),
+                Value::Array(_) => Err(InvalidIdTypeError("array").into()),
+                Value::Object(_) => Err(InvalidIdTypeError("object").into()),
+            })
     }
 }
 
