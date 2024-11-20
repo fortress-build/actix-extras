@@ -19,7 +19,7 @@ all-features = true
 
 [dependencies]
 actix-service = "2"
-actix-session = { path = "../actix-session/" }
+actix-session = { git = "https://github.com/fortress-build/actix-extras", branch = "master" }
 actix-utils = "3"
 actix-web = { version = "4", default-features = false, features = [
   "cookies",
@@ -39,7 +39,7 @@ actix-web = { version = "4", default-features = false, features = [
   "cookies",
   "secure-cookies",
 ] }
-actix-session = { path = "../actix-session/", features = [
+actix-session = { git = "https://github.com/fortress-build/actix-extras", branch = "master", features = [
   "redis-session",
   "cookie-session",
 ] }

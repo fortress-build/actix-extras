@@ -77,7 +77,7 @@ struct SessionInner {
 }
 
 impl Session {
-    #[cfg(test)]
+    /// Useful for testing
     pub fn mock(state: SessionState, status: SessionStatus) -> Self {
         Self(Rc::new(RefCell::new(SessionInner { state, status })))
     }

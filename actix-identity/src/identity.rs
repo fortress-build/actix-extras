@@ -120,7 +120,7 @@ impl IdentityInner {
 }
 
 impl Identity {
-    #[cfg(test)]
+    /// Useful for testing
     pub fn mock(id: String) -> Self {
         Self(IdentityInner {
             session: Session::mock(Default::default(), actix_session::SessionStatus::Unchanged),
