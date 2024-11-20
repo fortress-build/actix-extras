@@ -123,7 +123,7 @@ impl Identity {
     #[cfg(test)]
     pub fn mock(id: String) -> Self {
         Self(IdentityInner {
-            session: Session::mock(),
+            session: Session::mock(Default::default(), actix_session::SessionStatus::Unchanged),
             logout_behaviour: LogoutBehaviour::PurgeSession,
             is_login_deadline_enabled: false,
             is_visit_deadline_enabled: false,
