@@ -122,12 +122,16 @@ impl IdentityInner {
 impl Identity {
     /// Useful for testing
     pub fn mock(id: String) -> Self {
+        let session = Session::mock(Default::default(), actix_session::SessionStatus::Unchanged);
+
+        session.insert("nervemq-id", id).unwrap();
+
         Self(IdentityInner {
-            session: Session::mock(Default::default(), actix_session::SessionStatus::Unchanged),
+            session,
             logout_behaviour: LogoutBehaviour::PurgeSession,
             is_login_deadline_enabled: false,
             is_visit_deadline_enabled: false,
-            id_key: "nerve-id",
+            id_key: "nervemq-id",
             last_visit_unix_timestamp_key: "last-visit-timestamp",
             login_unix_timestamp_key: "login-timestamp",
         })
