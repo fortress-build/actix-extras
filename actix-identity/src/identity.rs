@@ -120,6 +120,19 @@ impl IdentityInner {
 }
 
 impl Identity {
+    #[cfg(test)]
+    pub fn mock(id: String) -> Self {
+        Self(IdentityInner {
+            session: Session::mock(),
+            logout_behaviour: LogoutBehaviour::PurgeSession,
+            is_login_deadline_enabled: false,
+            is_visit_deadline_enabled: false,
+            id_key: "nerve-id",
+            last_visit_unix_timestamp_key: "last-visit-timestamp",
+            login_unix_timestamp_key: "login-timestamp",
+        })
+    }
+
     /// Return the user id associated to the current session.
     ///
     /// # Examples

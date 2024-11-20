@@ -77,6 +77,11 @@ struct SessionInner {
 }
 
 impl Session {
+    #[cfg(test)]
+    pub fn mock(state: SessionState, status: SessionStatus) -> Self {
+        Self(Rc::new(RefCell::new(SessionInner { state, status })))
+    }
+
     /// Get a `value` from the session as a [`serde_json::Value`].
     pub fn get_value(&self, key: &str) -> Option<Value> {
         self.0.borrow().state.get(key).cloned()
