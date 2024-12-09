@@ -1,6 +1,6 @@
 [package]
-name = "actix-session"
-version = "0.10.1"
+name = "nervemq-actix-session"
+version = "0.10.2"
 authors = [
   "Nikolay Kim <fafhrd91@gmail.com>",
   "Luca Palmieri <rust@lpalmieri.com>",
@@ -12,6 +12,10 @@ homepage.workspace = true
 license.workspace = true
 edition.workspace = true
 rust-version.workspace = true
+
+[lib]
+name = "actix_session"
+path = "src/lib.rs"
 
 [package.metadata.docs.rs]
 rustdoc-args = ["--cfg", "docsrs"]
@@ -28,7 +32,10 @@ redis-pool = ["dep:deadpool-redis"]
 [dependencies]
 actix-service = "2"
 actix-utils = "3"
-actix-web = { version = "4", default-features = false, features = ["cookies", "secure-cookies"] }
+actix-web = { version = "4", default-features = false, features = [
+  "cookies",
+  "secure-cookies",
+] }
 
 anyhow = "1"
 derive_more = { version = "1", features = ["display", "error", "from"] }
@@ -38,13 +45,23 @@ serde_json = { version = "1" }
 tracing = { version = "0.1.30", default-features = false, features = ["log"] }
 
 # redis-session
-redis = { version = "0.27", default-features = false, features = ["tokio-comp", "connection-manager"], optional = true }
+redis = { version = "0.27", default-features = false, features = [
+  "tokio-comp",
+  "connection-manager",
+], optional = true }
 deadpool-redis = { version = "0.18", optional = true }
 
 [dev-dependencies]
-actix-session = { path = ".", features = ["cookie-session", "redis-session"] }
+actix-session = { path = ".", features = [
+  "cookie-session",
+  "redis-session",
+], package = "nervemq-actix-session" }
 actix-test = "0.1"
-actix-web = { version = "4", default-features = false, features = ["cookies", "secure-cookies", "macros"] }
+actix-web = { version = "4", default-features = false, features = [
+  "cookies",
+  "secure-cookies",
+  "macros",
+] }
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 tracing = "0.1.30"
 

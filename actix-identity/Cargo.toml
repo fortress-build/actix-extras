@@ -1,6 +1,6 @@
 [package]
-name = "actix-identity"
-version = "0.8.0"
+name = "nervemq-actix-identity"
+version = "0.8.1"
 authors = [
   "Nikolay Kim <fafhrd91@gmail.com>",
   "Luca Palmieri <rust@lpalmieri.com>",
@@ -13,13 +13,17 @@ license.workspace = true
 edition.workspace = true
 rust-version.workspace = true
 
+[lib]
+name = "actix_identity"
+path = "src/lib.rs"
+
 [package.metadata.docs.rs]
 rustdoc-args = ["--cfg", "docsrs"]
 all-features = true
 
 [dependencies]
 actix-service = "2"
-actix-session = { git = "https://github.com/fortress-build/actix-extras", branch = "master" }
+actix-session = { version = "0.10.2", package = "nervemq-actix-session" }
 actix-utils = "3"
 actix-web = { version = "4", default-features = false, features = [
   "cookies",
@@ -39,7 +43,8 @@ actix-web = { version = "4", default-features = false, features = [
   "cookies",
   "secure-cookies",
 ] }
-actix-session = { git = "https://github.com/fortress-build/actix-extras", branch = "master", features = [
+
+actix-session = { version = "0.10.2", package = "nervemq-actix-session", features = [
   "redis-session",
   "cookie-session",
 ] }

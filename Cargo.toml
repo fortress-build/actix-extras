@@ -1,14 +1,14 @@
 [workspace]
 resolver = "2"
 members = [
-    "actix-cors",
-    "actix-identity",
-    "actix-limitation",
-    "actix-protobuf",
-    "actix-session",
-    "actix-settings",
-    "actix-web-httpauth",
-    "actix-ws",
+  "actix-cors",
+  "actix-identity",
+  "actix-limitation",
+  "actix-protobuf",
+  "actix-session",
+  "actix-settings",
+  "actix-web-httpauth",
+  "actix-ws",
 ]
 
 [workspace.package]
@@ -25,10 +25,10 @@ future-incompatible = { level = "deny" }
 
 [patch.crates-io]
 actix-cors = { path = "./actix-cors" }
-actix-identity = { path = "./actix-identity" }
+nervemq-actix-identity = { path = "./actix-identity" }
 actix-limitation = { path = "./actix-limitation" }
 actix-protobuf = { path = "./actix-protobuf" }
-actix-session = { path = "./actix-session" }
+nervemq-actix-session = { path = "./actix-session" }
 actix-settings = { path = "./actix-settings" }
 actix-web-httpauth = { path = "./actix-web-httpauth" }
 
